@@ -286,6 +286,12 @@ body {
   .sheet { margin: 0; page-break-after: always; }
   .cut-guide { border-left: 0.3px solid #ccc; }
   .cut-guide::before, .cut-guide::after { display: none; }
+
+  /* Remove Safari/Chrome print headers and footers */
+  @page {
+    margin: 0;
+    size: A4 landscape;
+  }
 }
 </style>
 </head>
