@@ -309,98 +309,9 @@ body {
 /* ══════════════════════════════
    KITCHEN TICKET MODAL
 ══════════════════════════════ */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  z-index: 500;
-  align-items: flex-end;
-  justify-content: center;
-}
-.modal-overlay.open { display: flex; }
-
-.modal {
-  background: white;
-  width: 100%;
-  max-width: 520px;
-  border-radius: 16px 16px 0 0;
-  padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
-  animation: slideUp 0.22s ease;
-}
 @keyframes slideUp {
   from { transform: translateY(100%); }
   to   { transform: translateY(0); }
-}
-
-.modal-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 300;
-  font-size: 14pt;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--ink);
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.modal-fields {
-  display: grid;
-  grid-template-columns: 1fr 1fr 80px;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.modal-field label {
-  display: block;
-  font-size: 6pt;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 6px;
-}
-.modal-field input {
-  width: 100%;
-  border: none;
-  border-bottom: 1px solid var(--faint);
-  padding: 6px 2px;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 14pt;
-  font-weight: 300;
-  color: var(--ink);
-  background: transparent;
-  outline: none;
-  -webkit-appearance: none;
-}
-.modal-field input:focus { border-bottom-color: var(--green); }
-.modal-field.pax input { text-align: center; font-size: 20pt; }
-
-.modal-actions {
-  display: flex;
-  gap: 10px;
-}
-.modal-btn {
-  flex: 1;
-  padding: 15px;
-  border: none;
-  border-radius: 10px;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 11pt;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  cursor: pointer;
-  -webkit-appearance: none;
-}
-.modal-btn-print {
-  background: var(--green);
-  color: white;
-}
-.modal-btn-print:active { background: #2e3d24; }
-.modal-btn-cancel {
-  background: var(--cream);
-  color: var(--muted);
-  flex: 0 0 auto;
-  padding: 15px 18px;
 }
 
 /* Kitchen button in footer */
@@ -520,33 +431,7 @@ body {
 }
 .kt-dish-name.blank { color: #bbb; }
 
-/* Table / Pax write lines at bottom */
-.kt-footer {
-  flex-shrink: 0;
-  border-top: 0.3px solid #e8e5e0;
-  padding-top: 2mm;
-  margin-top: 2mm;
-  display: flex;
-  gap: 4mm;
-}
-.kt-write-row {
-  display: flex;
-  align-items: baseline;
-  gap: 1.5mm;
-  flex: 1;
-}
-.kt-write-label {
-  font-size: 5pt;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: #8a8880;
-  flex-shrink: 0;
-}
-.kt-write-line {
-  flex: 1;
-  border-bottom: 0.4px solid #ccc;
-  height: 4mm;
-}
+
 </style>
 <style>
 /* Top-level @page — must be outside @media for Safari iOS support */
@@ -643,27 +528,6 @@ body {
   <button class="print-btn" onclick="setTimeout(function(){window.print();},100)">Print Menu</button>
 </div>
 
-    <div class="modal-fields">
-      <div class="modal-field">
-        <label>Table</label>
-        <input id="kt-table" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="—" />
-      </div>
-      <div class="modal-field">
-        <label>Guest Name</label>
-        <input id="kt-name" type="text" inputmode="text" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="—" />
-      </div>
-      <div class="modal-field pax">
-        <label>Pax</label>
-        <input id="kt-pax" type="number" inputmode="numeric" min="1" max="99" placeholder="0" />
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancel</button>
-      <button class="modal-btn modal-btn-print" onclick="printTicket()">Print Ticket</button>
-    </div>
-  </div>
-</div>
-
 <!-- Print-only kitchen ticket -->
 <div id="kitchen-ticket">
   <div class="kt-grid">
@@ -673,24 +537,7 @@ body {
     <div class="kt-page" id="kt-ticket-3"></div>
   </div>
 </div>
-    <div class="kt-info">
-      <div class="kt-info-field">
-        <span class="kt-info-label">Table</span>
-        <span class="kt-info-value" id="kt-print-table"></span>
-      </div>
-      <div class="kt-info-field">
-        <span class="kt-info-label">Guest Name</span>
-        <span class="kt-info-value" id="kt-print-name"></span>
-      </div>
-      <div class="kt-info-field pax">
-        <span class="kt-info-label">Pax</span>
-        <span class="kt-info-value" id="kt-print-pax"></span>
-      </div>
-    </div>
-    <hr class="kt-divider">
-    <div class="kt-dishes" id="kt-print-dishes"></div>
-  </div>
-</div>
+
 
 <!-- ══════ FRONT SHEET ══════ -->
 <div class="sheet-wrap">
@@ -806,10 +653,7 @@ body {
       </div>
       <hr class="kt-divider">
       <div class="kt-dishes">${dishes}</div>
-      <div class="kt-footer">
-        <div class="kt-write-row"><span class="kt-write-label">Table</span><div class="kt-write-line"></div></div>
-        <div class="kt-write-row"><span class="kt-write-label">Pax</span><div class="kt-write-line"></div></div>
-      </div>`;
+`;
   }
 
   function printTicket() {
