@@ -424,164 +424,128 @@ body {
 /* ══════════════════════════════
    PRINT-ONLY KITCHEN TICKET
 ══════════════════════════════ */
-#kitchen-ticket {
-  display: none;
-}
+/* Kitchen ticket — screen hidden */
+#kitchen-ticket { display: none; }
 
 @media print {
-  /* When printing ticket, hide everything except the ticket */
   body.printing-ticket #editor,
   body.printing-ticket .print-footer,
-  body.printing-ticket .sheet-wrap,
-  body.printing-ticket .modal-overlay {
-    display: none !important;
-  }
-  body.printing-ticket #kitchen-ticket {
-    display: block !important;
-  }
-  body.printing-ticket .kt-grid {
-    page-break-inside: avoid;
-  }
-
-  /* When printing menu, hide ticket */
-  body:not(.printing-ticket) #kitchen-ticket {
-    display: none !important;
-  }
+  body.printing-ticket .sheet-wrap { display: none !important; }
+  body.printing-ticket #kitchen-ticket { display: block !important; }
+  body:not(.printing-ticket) #kitchen-ticket { display: none !important; }
 }
 
-#kitchen-ticket {
-  width: 210mm;
-  min-height: 297mm;
-}
+/* 2×2 grid exactly filling A4 portrait (210×297mm) */
+#kitchen-ticket { width: 210mm; height: 297mm; overflow: hidden; }
 
 .kt-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 105mm 105mm;
+  grid-template-rows: 148.5mm 148.5mm;
   width: 210mm;
   height: 297mm;
-  gap: 0;
 }
 
+/* Each ticket cell */
 .kt-page {
-  width: 100%;
-  height: 100%;
-  padding: 7mm 8mm;
+  width: 105mm;
+  height: 148.5mm;
+  padding: 5mm 6mm 4mm;
   font-family: 'Cormorant Garamond', Georgia, serif;
   border: 0.3px solid #ddd;
+  box-sizing: border-box;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .kt-header {
   text-align: center;
-  border-bottom: 0.5px solid #ccc;
-  padding-bottom: 4mm;
-  margin-bottom: 5mm;
+  border-bottom: 0.4px solid #ccc;
+  padding-bottom: 2.5mm;
+  margin-bottom: 2.5mm;
+  flex-shrink: 0;
 }
 .kt-logo {
-  font-size: 16pt;
+  font-size: 13pt;
   font-weight: 300;
   letter-spacing: 5px;
   text-transform: uppercase;
   color: #1a1a18;
+  line-height: 1;
 }
 .kt-date {
-  font-size: 7pt;
-  letter-spacing: 2px;
-  color: #8a8880;
-  margin-top: 2mm;
-  text-transform: uppercase;
-}
-
-.kt-info {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 3mm 4mm;
-  margin-bottom: 5mm;
-}
-.kt-info-field {}
-.kt-info-label {
   font-size: 5.5pt;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  letter-spacing: 1.5px;
   color: #8a8880;
-  display: block;
-  margin-bottom: 1.5mm;
-}
-.kt-info-value {
-  font-size: 13pt;
-  font-weight: 300;
-  color: #1a1a18;
-  border-bottom: 0.5px solid #ccc;
-  padding-bottom: 1mm;
-  min-height: 7mm;
-  display: block;
-}
-.kt-info-field.pax .kt-info-value {
-  font-size: 20pt;
-  text-align: center;
-  border-bottom: none;
+  margin-top: 1mm;
+  text-transform: uppercase;
 }
 
 .kt-divider {
   border: none;
-  border-top: 0.5px solid #e8e5e0;
-  margin: 3mm 0;
+  border-top: 0.3px solid #e8e5e0;
+  margin: 1.5mm 0;
+  flex-shrink: 0;
 }
 
-.kt-dishes {}
+/* Dish rows — flex-grow to fill space evenly */
+.kt-dishes {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
 .kt-dish-row {
   display: flex;
   align-items: baseline;
   gap: 2mm;
-  padding: 1.5mm 0;
-  border-bottom: 0.3px solid #f0ede8;
+  border-bottom: 0.2px solid #f0ede8;
+  padding: 0.5mm 0;
 }
 .kt-dish-row:last-child { border-bottom: none; }
 .kt-dish-num {
-  font-size: 6pt;
+  font-size: 5.5pt;
   color: #ccc;
-  width: 5mm;
+  width: 4mm;
   flex-shrink: 0;
   text-align: right;
 }
 .kt-dish-name {
-  font-size: 8.5pt;
+  font-size: 7.5pt;
   color: #1a1a18;
   flex: 1;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
 }
-.kt-dish-name.fixed {
-  color: #1a1a18;
-}
-.kt-dish-name.blank {
-  color: #bbb;
-}
+.kt-dish-name.blank { color: #bbb; }
+
+/* Table / Pax write lines at bottom */
 .kt-footer {
-  margin-top: 5mm;
-  padding-top: 4mm;
-  border-top: 0.5px solid #e8e5e0;
+  flex-shrink: 0;
+  border-top: 0.3px solid #e8e5e0;
+  padding-top: 2mm;
+  margin-top: 2mm;
   display: flex;
-  flex-direction: column;
   gap: 4mm;
 }
 .kt-write-row {
   display: flex;
   align-items: baseline;
-  gap: 3mm;
+  gap: 1.5mm;
+  flex: 1;
 }
 .kt-write-label {
-  font-size: 6pt;
-  letter-spacing: 2px;
+  font-size: 5pt;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: #8a8880;
   flex-shrink: 0;
-  width: 8mm;
 }
 .kt-write-line {
   flex: 1;
-  border-bottom: 0.5px solid #ccc;
-  height: 5mm;
+  border-bottom: 0.4px solid #ccc;
+  height: 4mm;
 }
 </style>
 <style>
